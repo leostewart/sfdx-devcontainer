@@ -1,0 +1,33 @@
+{
+  "name": "sfdx",
+  "dockerFile": "Dockerfile",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "salesforcedx-vscode-apex.java.home": "/usr/lib/jvm/java-11-openjdk-arm64",
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/bower_components": true,
+          "**/.sfdx": true
+        },
+        "extensions": [
+          "salesforce.salesforcedx-vscode",
+          "redhat.vscode-xml",
+          "dbaeumer.vscode-eslint",
+          "esbenp.prettier-vscode",
+          "financialforce.lana"
+        ]
+      }
+    }
+  },
+  "remoteUser": "node",
+  "mounts": [
+    "source=sfdx-bashhistory,target=/commandhistory,type=volume",
+    "source=sf-configuration,target=/home/node/.sf,type=volume",
+    "source=sfdx-configuration,target=/home/node/.sfdx,type=volume"
+
+    // Use host npm configuration
+    // "source=${localEnv:HOME}${localEnv:USERPROFILE}/.npmrc,target=/home/node/.npmrc,type=bind,consistency=cached",
+  ],
+  "postCreateCommand": "git config --global --add safe.directory '$(pwd)' && npm install"
+}
